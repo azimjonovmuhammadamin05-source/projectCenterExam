@@ -1,6 +1,5 @@
-__pycache__/
-*.pyc
-.pytest_cache/
-venv/
-.venv/
+bin/
+obj/
+*.user
 tasks.json
+.vs/
