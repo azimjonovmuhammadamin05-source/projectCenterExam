@@ -16,4 +16,27 @@ cd projectCenterExam
 ```
 
 ## Использование
-См. раздел "Usage" ниже (будет дополнен).
+
+```bash
+# Добавить задачу
+python3 todo.py add "Купить молоко"
+
+# Показать список задач
+python3 todo.py list
+
+# Отметить задачу выполненной
+python3 todo.py done 1
+
+# Удалить задачу
+python3 todo.py remove 1
+```
+
+## Тесты
+```bash
+pip install pytest
+python3 -m pytest tests/ -v
+```
+
+## CI
+При каждом push в `main` автоматически запускаются тесты через GitHub Actions.
+
