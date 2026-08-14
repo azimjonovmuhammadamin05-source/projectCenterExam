@@ -1,4 +1,8 @@
 import argparse
+import json
+import os
+
+DATA_FILE = "tasks.json"
 
 
 class Task:
@@ -20,13 +24,26 @@ class Task:
 
 
 class TaskManager:
-    def __init__(self):
+    def __init__(self, data_file: str = DATA_FILE):
+        self.data_file = data_file
         self.tasks: list[Task] = []
+        self.load()
+
+    def load(self) -> None:
+        if os.path.exists(self.data_file):
+            with open(self.data_file, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                self.tasks = [Task.from_dict(d) for d in data]
+
+    def save(self) -> None:
+        with open(self.data_file, "w", encoding="utf-8") as f:
+            json.dump([t.to_dict() for t in self.tasks], f, indent=2, ensure_ascii=False)
 
     def add(self, title: str) -> Task:
         new_id = (max((t.id for t in self.tasks), default=0)) + 1
         task = Task(new_id, title)
         self.tasks.append(task)
+        self.save()
         return task
 
     def list(self) -> list[Task]:
@@ -36,6 +53,7 @@ class TaskManager:
         for t in self.tasks:
             if t.id == task_id:
                 self.tasks.remove(t)
+                self.save()
                 return True
         return False
 
@@ -43,6 +61,7 @@ class TaskManager:
         for t in self.tasks:
             if t.id == task_id:
                 t.done = True
+                self.save()
                 return True
         return False
 
